@@ -8,18 +8,18 @@ Tawasal is a social media app built using **ASP.NET MVC**. The app allows users 
 ## Features
 
 - **User Profiles**:  
-  Users can create, view, and update their profiles with personal information, including profile pictures, bios, and more.
+  - Users can create, view, and update their profiles with personal information, including profile pictures, bios, and more.
 
 - **Posting & Timeline**:  
-  Users can create posts and view posts from their friends and followings on their timeline.
+  - Users can create posts and view posts from their friends and followings on their timeline.
 
 - **Engagement (Likes & Comments)**:  
-  Users can like and comment on posts from their friends and followings.
+  - Users can like and comment on posts from their friends and followings.
 
 - **Social Connections**:  
-  Users can send friend requests, follow other users, and manage their connections.
+  - Users can send friend requests, follow other users, and manage their connections.
 
-- **Notifications**:  
+- **Notifications**:
   - New comments on posts
   - Likes on posts
   - Friend requests
