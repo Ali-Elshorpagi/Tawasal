@@ -37,24 +37,24 @@ Tawasal is a social media app built using **ASP.NET MVC**. The app allows users 
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/social-media-app.git
+    git clone https://github.com/Ali-Elshorpagi/Tawasal.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd social-media-app
+    cd Tawasal
     ```
 
 3. Set up the database connection in `appsettings.json`.
 
 4. Apply migrations:
     ```bash
-    dotnet ef database update --project <ProjectName>
+    dotnet ef database update --project Tawasal
     ```
 
 5. Run the application:
     ```bash
-    dotnet run --project <ProjectName>
+    dotnet run --project Tawasal
     ```
 
 6. Access the application in your browser at `http://localhost:5037`
