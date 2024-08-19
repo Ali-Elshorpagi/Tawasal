@@ -9,7 +9,6 @@
 <form asp-action="EditPost" method="post">
     <input type="hidden" asp-for="Id" />
     <div class="form-group">
-        @* <label asp-for="Content"></label> *@
         <textarea asp-for="Content" class="form-control" rows="5"></textarea>
         <span asp-validation-for="Content" class="text-danger"></span>
     </div>

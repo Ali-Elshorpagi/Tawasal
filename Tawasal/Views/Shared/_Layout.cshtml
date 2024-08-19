@@ -20,14 +20,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SocialMediaApp - @ViewData["Title"] </title>
+    <title>Tawasal - @ViewData["Title"] </title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/SocialMediaApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Tawasal.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
 
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
             margin: 0;
         }
@@ -53,24 +54,29 @@
             justify-content: space-between;
             align-items: center;
         }
-
     </style>
 
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Feed" asp-action="TimeLine">SocialMediaApp</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Feed" asp-action="TimeLine">
+                    @* <img src="~/Assets/logo.png" alt="Tawasal Logo"
+                    style="height: 30px; width: 30px; margin-right: 8px;"> *@
+                    Tawasal
+                </a>
+                @* <a class="navbar-brand" asp-area="" asp-controller="Feed" asp-action="TimeLine">Tawasal</a> *@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Feed"
-                               asp-action="TimeLine">Home</a>
+                                asp-action="TimeLine">Home</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
@@ -87,14 +93,14 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Profile" asp-action="Details"
-                                   asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
+                                    asp-route-id="@User.FindFirst(ClaimTypes.NameIdentifier)?.Value">
                                     Welcome @(User.Identity.Name ?? "User")
                                 </a>
                             </li>
                             <li class="nav-item position-relative">
                                 <a class="nav-link text-dark" asp-controller="Profile" asp-action="Notifications">
                                     <img src="~/Assets/notification_icon.png" alt="Notification Icon" width="30rem"
-                                         height="30rem" />
+                                        height="30rem" />
                                     @if (unseenNotificationCount > 0)
                                     {
                                         <span class="badge bg-danger rounded-pill notification-badge-custom">
@@ -120,12 +126,13 @@
     </div>
     <footer class="border-top footer text-muted mt-auto">
         <div class="container d-flex justify-content-between align-items-center">
-            <span>&copy; 2024 - SocialMediaApp - Ali Elshorpagi</span>
+            <span>&copy; 2024 - Tawasal - Ali Elshorpagi</span>
             <div>
                 <a href="https://www.linkedin.com/in/ali-elshorpagi/" target="_blank" class="text-decoration-none">
                     <i class="bi bi-linkedin" style="font-size: 1.5rem;"></i>
                 </a>
-                <a href="https://github.com/Ali-Elshorpagi" target="_blank" class="text-decoration-none" style="margin-left: 10px;">
+                <a href="https://github.com/Ali-Elshorpagi" target="_blank" class="text-decoration-none"
+                    style="margin-left: 10px;">
                     <i class="bi bi-github" style="font-size: 1.5rem;"></i>
                 </a>
             </div>
