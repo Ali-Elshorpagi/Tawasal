@@ -1,0 +1,130 @@
+﻿@model PostDetailsViewModel
+
+@{
+    ViewData["Title"] = "Post Details";
+    var errorMessage = TempData["ErrorMessage"] as string;
+    var successMessage = TempData["SuccessMessage"] as string;
+}
+
+<style>
+    .atract-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+    }
+</style>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">
+        @successMessage
+    </div>
+}
+
+<div class="post my-4 p-4 bg-light rounded shadow-sm">
+    <div class="d-flex align-items-center mb-2">
+        <a class="atract-name" asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@Model.Post.Profile.ApplicationUserId">
+            <img src="/ProfilePictures/@Model.Post.Profile.ProfilePicturePath" alt="@Model.Post.Profile.FirstName's Profile Picture" class="rounded-circle me-2" style="width: 50px; height: 50px;">
+        </a>
+        <div>
+            <a class="atract-name" asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@Model.Post.Profile.ApplicationUserId">
+                <strong>@Model.Post.Profile.FirstName</strong>
+            </a>
+            <small class="text-muted d-block">@Model.Post.CreatedAt.ToString("f")</small>
+        </div>
+    </div>
+    @if (Model.Post.Profile.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+        {
+            <div class="ms-auto">
+                <form asp-action="DeletePost" method="post" class="d-inline">
+                    <input type="hidden" name="postId" value="@Model.Post.Id" />
+                    <button type="submit" class="btn btn-outline-danger btn-sm">🗑️ Delete</button>
+                </form>
+                <a asp-action="EditPost" asp-route-id="@Model.Post.Id" class="btn btn-outline-secondary btn-sm">✏️ Edit</a>
+            </div>
+        }
+    <p class="fs-5 fw-bold">@Model.Post.Content</p>
+
+    <form asp-action="ToggleLike" method="post" class="d-inline">
+        <input type="hidden" name="postId" value="@Model.Post.Id" />
+
+        @{
+            string buttonClass = Model.IsLikedByCurrentUser ? "btn btn-primary btn-sm me-2" : "btn btn-outline-primary btn-sm me-2";
+            string buttonText = Model.IsLikedByCurrentUser ? "💙 Liked" : "🤍 Like";
+        }
+
+        <button type="submit" class="@buttonClass">@buttonText</button>
+        <span class="text-secondary">Likes (@Model.Likes.Count)</span>
+    </form>
+
+    <div class="comments mt-4">
+        <h4 class="fw-bold">Comments (@Model.Comments.Count)</h4>
+        @if (Model.Comments.Any())
+        {
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="comment p-3 mb-3 bg-white rounded border shadow-sm">
+                    <div class="d-flex align-items-center">
+                        <a class="atract-name" asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@comment.Profile.ApplicationUserId">
+                            <img src="/ProfilePictures/@comment.Profile.ProfilePicturePath" alt="@comment.Profile.FirstName's Profile Picture" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                        </a>
+                        <div>
+                            <a class="atract-name"  asp-controller="Profile" asp-action="ViewProfile" asp-route-id="@comment.Profile.ApplicationUserId">
+                                <strong>@comment.Profile.FirstName</strong>
+                            </a>
+                            <small class="text-muted d-block">@comment.CreatedAt.ToString("f")</small>
+                        </div>
+                        <div class="ms-auto">
+                            @if (comment.Profile.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                            {
+                                <form asp-action="DeleteComment" method="post" class="d-inline">
+                                    <input type="hidden" name="commentId" value="@comment.Id" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">🗑️ Delete</button>
+                                </form>
+                                <a asp-action="EditComment" asp-route-id="@comment.Id" class="btn btn-outline-secondary btn-sm">
+                                    ✏️ Edit
+                                </a>
+                            }
+                         </div>
+                    </div>
+                    <p class="mt-2 mb-1">@comment.Content</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p class="text-muted">No comments yet. Be the first to comment!</p>
+        }
+    </div>
+    
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+    <form asp-action="Comment" method="post" class="mt-3">
+        <input type="hidden" name="postId" value="@Model.Post.Id" />
+        <div class="form-group mb-3">
+            <textarea name="content" class="form-control" rows="3" placeholder="Add a comment..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">💬 Comment</button>
+    </form> 
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} 

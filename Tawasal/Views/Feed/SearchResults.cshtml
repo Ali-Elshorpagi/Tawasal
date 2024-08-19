@@ -1,0 +1,52 @@
+﻿@model SearchResultsViewModel
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<style>
+    .profile-picture {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+</style>
+
+<h2>Search Results</h2>
+
+@if (Model is null || !Model.SearchResults.Any())
+{
+    <p>No profiles found</p>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var profile in Model.SearchResults)
+        {
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-auto">
+                        <img src="~/ProfilePictures/@profile.ProfilePicturePath" class="img-fluid profile-picture"
+                            alt="Profile Picture" />
+                    </div>
+                    <div class="col">
+                        <h4>@profile.FirstName @profile.LastName</h4>
+                        <p>@profile.Bio</p>
+                        <a class="btn btn-primary" asp-controller="Profile" asp-action="ViewProfile"
+                            asp-route-id="@profile.ApplicationUserId">View Profile</a>
+                    </div>
+                </div>
+            </li>
+            <br />
+        }
+    </ul>
+}
+<br />
+<a class="btn btn-primary asp-controller=" Feed" asp-action="TimeLine">Back to Home</a>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,85 @@
+@model ICollection<Profile>
+
+@{
+    ViewData["Title"] = "Followings";
+}
+
+<style>
+    .Followings-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .Followings-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .Followings-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .follower-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .follower-item:last-child {
+        border-bottom: none;
+    }
+
+    .follower-picture {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+
+    .follower-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .follower-name:hover {
+        color: #0056b3;
+    }
+</style>
+
+<div class="Followings-container">
+    @if (Model.Count != 0)
+    {
+        <h2 class="Followings-header">Followings</h2>
+        <ul class="Followings-list">
+            @foreach (var following in Model)
+            {
+                <li class="follower-item">
+                    <a class="follower-name" asp-action="ViewProfile" asp-route-id="@following.ApplicationUserId">
+                        <img src="/ProfilePictures/@following.ProfilePicturePath" alt="@following.FirstName's profile picture"
+                            class="follower-picture" />
+                        @following.FirstName @following.LastName
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-center">There are no Followings yet</p>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

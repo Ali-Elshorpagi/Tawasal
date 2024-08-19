@@ -1,0 +1,86 @@
+﻿@model ICollection<Profile>
+
+@{
+    ViewData["Title"] = "Friends";
+}
+
+<style>
+    .friends-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .friends-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .friends-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .friend-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .friend-item:last-child {
+        border-bottom: none;
+    }
+
+    .friend-picture {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+
+    .friend-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .friend-name:hover {
+        color: #0056b3;
+    }
+</style>
+
+<div class="friends-container">
+    @if (Model.Count != 0)
+    {
+        <h2 class="friends-header">Friends</h2>
+        <ul class="friends-list">
+            @foreach (var friend in Model)
+            {
+                <li class="friend-item">
+                    <a class="friend-name" asp-action="ViewProfile" asp-route-id="@friend.ApplicationUserId">
+                        <img src="/ProfilePictures/@friend.ProfilePicturePath" alt="@friend.FirstName's profile picture"
+                            class="friend-picture" />
+
+                        @friend.FirstName @friend.LastName
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p class="text-center">There are no Friends yet</p>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

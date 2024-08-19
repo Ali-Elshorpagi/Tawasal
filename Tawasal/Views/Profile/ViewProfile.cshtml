@@ -1,0 +1,132 @@
+﻿@model ViewProfileViewModel
+
+@{
+    ViewData["Title"] = $"{Model.Profile.FirstName}\'s Profile";
+}
+
+<style>
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        margin: auto;
+        max-width: 600px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-picture img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 20px;
+        border: 3px solid #dee2e6;
+    }
+
+    .profile-details h3 {
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .profile-details p {
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #495057;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .btn-container button {
+        flex: 1;
+        margin: 0 5px;
+    }
+
+    .btn {
+        border-radius: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+
+    .back-btn {
+        margin-top: 20px;
+        width: 100%;
+    }
+</style>
+
+
+<div class="profile-container">
+    <div class="profile-picture">
+        <img src="/ProfilePictures/@Model.Profile.ProfilePicturePath" alt="Profile Picture" />
+    </div>
+    <div class="profile-details text-center">
+        <h3>@Model.Profile.FirstName @Model.Profile.LastName</h3>
+        <p><strong>Bio:</strong> @Model.Profile.Bio</p>
+        <p><strong>Address:</strong> @Model.Profile.Address</p>
+        <p><strong>Birth Date:</strong> @Model.Profile.BirthofDate?.ToString("d")</p>
+    </div>
+
+    <div class="btn-container">
+        @if (!Model.IsFriend)
+        {
+            @if (Model.HasSentFriendRequest)
+            {
+                <form asp-action="CancelFriendRequest" method="post">
+                    <input type="hidden" name="receiverId" value="@Model.Profile.Id" />
+                    <button type="submit" class="btn btn-warning">Cancel Friend Request</button>
+                </form>
+            }
+            else if (Model.HasReceivedFriendRequest)
+            {
+                <form asp-action="AcceptFriendRequest" asp-controller="Profile" method="post">
+                    <input type="hidden" name="requestId" value="@Model.FriendRequestId" />
+                    <input type="hidden" name="profileId" value="@Model.Profile.Id" />
+                    <button type="submit" class="btn btn-success">Confirm Friend Request</button>
+                </form>
+                <form asp-action="DeclineFriendRequest" asp-controller="Profile" method="post">
+                    <input type="hidden" name="requestId" value="@Model.FriendRequestId" />
+                    <input type="hidden" name="profileId" value="@Model.Profile.Id" />
+                    <button type="submit" class="btn btn-danger">Decline Friend Request</button>
+                </form>
+            }
+            else
+            {
+                <form asp-action="SendFriendRequest" method="post">
+                    <input type="hidden" name="receiverId" value="@Model.Profile.Id" />
+                    <button type="submit" class="btn btn-primary">Add Friend</button>
+                </form>
+            }
+        }
+        else
+        {
+            <form asp-action="RemoveFriend" method="post">
+                <input type="hidden" name="friendProfileId" value="@Model.Profile.Id" />
+                <button type="submit" class="btn btn-danger">Remove Friend</button>
+            </form>
+        }
+        @if (Model.IsFollowing)
+        {
+            <form asp-controller="Profile" asp-action="Unfollow" method="post">
+                <input type="hidden" name="followedProfileId" value="@Model.Profile.Id" />
+                <button type="submit" class="btn btn-danger">Unfollow</button>
+            </form>
+        }
+        else
+        {
+            <form asp-controller="Profile" asp-action="Follow" method="post">
+                <input type="hidden" name="followedProfileId" value="@Model.Profile.Id" />
+                <button type="submit" class="btn btn-primary">Follow</button>
+            </form>
+        }
+    </div>
+
+    <a class="btn btn-secondary back-btn" asp-controller="Feed" asp-action="TimeLine">Back to Timeline</a>
+</div>

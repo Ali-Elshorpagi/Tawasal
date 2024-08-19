@@ -1,0 +1,34 @@
+﻿@model ICollection<Post>
+
+@{
+    ViewData["Title"] = "Posts";
+}
+
+@if (Model.Count != 0)
+{
+    <h2>My Posts</h2>
+
+    <br />
+    <ul>
+        @foreach (var post in Model)
+        {
+            <img src="/ProfilePictures/@post.Profile.ProfilePicturePath" alt="@post.Profile.FirstName's Profile Picture"
+                class="rounded-circle me-2" style="width: 50px; height: 50px;">
+            <div>
+                <strong>@post.Profile.FirstName</strong>
+                <small class="text-muted d-block">@post.CreatedAt.ToString("f")</small>
+            </div>
+            <p class="">@post.Content</p>
+        }
+    </ul>
+}
+else
+{
+    <p>There are no Posts yet</p>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

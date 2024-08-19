@@ -1,0 +1,41 @@
+﻿@model PostViewModel
+
+@{
+    ViewData["Title"] = "Add Post";
+}
+
+<h1 class="text-center mb-4">Add Post</h1>
+<hr />
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Create a New Post</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddPost" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        <div class="form-group mb-3">
+                            @* <label asp-for="Content" class="form-label"></label> *@
+                            <textarea asp-for="Content" class="form-control" rows="4"
+                                placeholder="What's on your mind?"></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                        <div class="form-group d-flex justify-content-between">
+                            <input type="submit" value="Add Post" class="btn btn-primary" />
+                            <a asp-action="TimeLine" asp-controller="Feed" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

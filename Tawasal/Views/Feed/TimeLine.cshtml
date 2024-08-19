@@ -1,0 +1,59 @@
+﻿@model TimeLineViewModel
+
+@{
+    ViewData["Title"] = "TimeLine";
+}
+<style>
+    .friend-name {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+    }
+</style>
+
+<h1 class="text-center mb-4">Timeline</h1>
+
+<div class="container">
+    <div class="form-group mb-4">
+        <form asp-action="Search" method="post" class="d-flex">
+            <input type="text" name="query" class="form-control me-2" placeholder="Search for users..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <div class="form-group mb-4">
+        <a class="btn btn-success" asp-action="AddPost" asp-controller="Feed">Add Post</a>
+    </div>
+
+    <div class="posts-list">
+        @foreach (var post in Model.Posts)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <a class="friend-name" asp-action="ViewProfile" asp-controller="Profile"
+                            asp-route-id="@post.Profile.ApplicationUserId">
+                            <img src="/ProfilePictures/@post.Profile.ProfilePicturePath" alt="@post.Profile.FirstName"
+                                class="rounded-circle me-2" style="width: 40px; height: 40px;" />
+                            <strong>@post.Profile.FirstName</strong>
+                        </a>
+                        <small class="text-muted ms-2">@post.CreatedAt.ToString("MMM d, yyyy h:mm tt")</small>
+                    </div>
+                    <p>@post.Content</p>
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">@post.Likes.Count Likes</span>
+                        <span class="text-muted">@post.Comments.Count Comments</span>
+                        <a asp-action="PostDetails" asp-route-id="@post.Id" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
