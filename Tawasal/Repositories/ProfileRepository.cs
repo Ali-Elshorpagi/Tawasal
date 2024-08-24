@@ -168,41 +168,36 @@ namespace Tawasal.Repositories
         public async Task<ICollection<Notification>> GetNotificationsByProfileIdAsync(Guid profileId)
         {
             return await _context.Notifications
-                .AsSplitQuery()
-                .Include(n => n.Profile)
-                .Where(n => n.ProfileId == profileId)
-                .OrderByDescending(n => n.CreatedAt)
-                .ToListAsync();
+                        .AsSplitQuery()
+                        .Include(n => n.Profile)
+                        .Where(n => n.ProfileId == profileId)
+                        .OrderByDescending(n => n.CreatedAt)
+                        .ToListAsync();
         }
         public async Task DeleteAllNotificationsAsync(Guid profileId)
         {
             var notifications = await _context.Notifications
-                .Where(n => n.ProfileId == profileId)
-                .ToListAsync();
+                        .Where(n => n.ProfileId == profileId)
+                        .ToListAsync();
 
             _context.Notifications.RemoveRange(notifications);
             await _context.SaveChangesAsync();
         }
         public async Task MarkNotificationsAsSeenAsync(Guid profileId)
         {
-            var notifications = await _context.Notifications
-                .Where(n => n.ProfileId == profileId && !n.IsSeen)
-                .ToListAsync();
-
-            foreach (var notification in notifications)
-            {
-                notification.IsSeen = true;
-            }
+            await _context.Notifications
+                        .Where(n => n.ProfileId == profileId & !n.IsSeen)
+                        .ExecuteUpdateAsync(s => s.SetProperty(p => p.IsSeen, true));
 
             await _context.SaveChangesAsync();
         }
         public async Task<ICollection<Profile>> GetFollowersAsync(Guid profileId)
         {
             return await _context.Followers
-                .AsSingleQuery()
-                .Where(f => f.FollowedProfileId == profileId)
-                .Select(f => f.FollowerProfile)
-                .ToListAsync();
+                        .AsSingleQuery()
+                        .Where(f => f.FollowedProfileId == profileId)
+                        .Select(f => f.FollowerProfile)
+                        .ToListAsync();
         }
         public async Task<ICollection<Profile>> GetFriendsAsync(Guid profileId)
         {
@@ -221,10 +216,10 @@ namespace Tawasal.Repositories
         public async Task<ICollection<FriendRequest>> GetFriendRequestsAsync(Guid profileId)
         {
             return await _context.FriendRequests
-                .AsSplitQuery()
-                .Where(fr => fr.ReceiverId == profileId && fr.Status == FriendRequestStatus.Pending)
-                .Include(fr => fr.Sender)
-                .ToListAsync();
+                        .AsSplitQuery()
+                        .Where(fr => fr.ReceiverId == profileId && fr.Status == FriendRequestStatus.Pending)
+                        .Include(fr => fr.Sender)
+                        .ToListAsync();
         }
         public async Task<bool> AreProfilesFriendsAsync(Guid profileId1, Guid profileId2)
         {
