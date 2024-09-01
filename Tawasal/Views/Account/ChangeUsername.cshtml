@@ -15,7 +15,10 @@
         <label asp-for="NewUsername" class="control-label"></label>
         <input asp-for="NewUsername" class="form-control" />
         <span asp-validation-for="NewUsername" class="text-danger"></span>
-    </div><br>
+    </div><br />
+    <h6 class="alert alert-info" style="font-size: 12px; padding: 8px;">
+        After change your username, please <strong> re-login </strong> to apply changes.
+    </h6>
     <div class="form-group">
         <input type="submit" value="Change Username" class="btn btn-primary" />
         <a class="btn btn-secondary" asp-action="Details" asp-controller="Profile" asp-route-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)">Back to Profile</a>
