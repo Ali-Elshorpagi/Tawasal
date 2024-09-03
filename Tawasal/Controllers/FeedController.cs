@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using Tawasal.Helpers;
 using Tawasal.Models;
 using Tawasal.Services.IServices;
 using Tawasal.ViewModels;
-using System.Security.Claims;
 
 namespace Tawasal.Controllers
 {
@@ -175,11 +175,6 @@ namespace Tawasal.Controllers
 
             TempData["SuccessMessage"] = "Comment added successfully";
             return RedirectToAction("PostDetails", new { id = postId });
-        }
-        [HttpGet]
-        public IActionResult SearchResults(SearchResultsViewModel SearchResult)
-        {
-            return View(SearchResult);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
